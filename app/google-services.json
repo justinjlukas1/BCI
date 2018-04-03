@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "353437141734",
+    "firebase_url": "https://bci491-art.firebaseio.com",
+    "project_id": "bci491-art",
+    "storage_bucket": "bci491-art.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353437141734:android:84b4f7a04c93e532",
+        "android_client_info": {
+          "package_name": "com.example.justinlukas.cs491"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353437141734-alvdogf9ajpe28sdpchaf2fdtnebgokt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX7TyrFBjqRyvKequdw8seiJLnU3ODCrg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
