@@ -29,3 +29,4 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+compile 'com.google.firebase:firebase-database:12.0.1'
