@@ -3,6 +3,18 @@ package com.example.justinlukas.cs491;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.firebase.database.FirebaseDatabase;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.ValueEventListener;
+
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -13,10 +25,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Write a message to the database
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("message");
+    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("message");
 
-    myRef.setValue("Hello, World!");
+   public void testFunction(String s) {
+       myRef.setValue("Hello, World!");
+   }
 
 }
 
