@@ -1,5 +1,6 @@
 package com.example.justinlukas.cs491;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.support.v7.app.AppCompatActivity;
@@ -15,13 +16,14 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import android.util.Log;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
 
 //    private static final String TAG = MainActivity.class.getSimpleName();
     private static final String TAG = "MainActivity1";
-
+    public String databaseChangeValue = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
                 // whenever data at this location is updated.
                 String value = dataSnapshot.getValue(String.class);
                 Log.d(TAG, "Value is: " + value);
+                databaseChangeValue = value;
+                if(value.equals("testValue"))
+                    testFunction();
             }
 
             @Override
@@ -60,8 +65,12 @@ public class MainActivity extends AppCompatActivity {
         */
     }
 
-   public void testFunction(String s) {
-       //myRef.setValue("Read Testing");
+   public void testFunction() {
+       Context context = getApplicationContext();
+       int duration = Toast.LENGTH_SHORT;
+
+       Toast toast = Toast.makeText(context, databaseChangeValue, duration);
+       toast.show();
 
     }
 
