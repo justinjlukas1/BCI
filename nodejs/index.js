@@ -17,11 +17,6 @@ function writeData(data,wave) {
     database.ref(wave + '/').set({
         BandPower: data
     })
-    console.log("Listening...");
-}
-
-function wait() {
-
 }
 
 // Handles OSC Data
@@ -31,6 +26,7 @@ var oscServer = new osc.Server(12345, '127.0.0.1');
 oscServer.on("/openbci", function (data, rinfo) {
       switch (data[1]) {
         case 1:
+            console.log("Listening...")
             var sum = data[2]+data[3]+data[4]+data[5]+data[6]
             writeData(String(data[2]),"Delta")
             writeData(String(data[3]),"Theta")
