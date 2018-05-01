@@ -1,7 +1,5 @@
 package com.example.justinlukas.cs491;
 
-import android.content.Context;
-import android.media.ToneGenerator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import com.google.firebase.database.FirebaseDatabase;
@@ -11,7 +9,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import android.util.Log;
-import android.widget.Toast;
 import android.speech.tts.TextToSpeech;
 import java.util.Locale;
 import java.util.Random;
@@ -20,32 +17,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     TextToSpeech t1;
     DatabaseReference Beta;
-    DatabaseReference Theta;
-    DatabaseReference TriviaQuestion;
-    DatabaseReference TriviaAnswer;
-
-    private static class Trivia {
-        public String question;
-        public String answer;
-
-        public Trivia(String question1, String answer1){
-            question = question1;
-            answer = answer1;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadActivity();
-    }
-
-    private void loadActivity() {
-        Beta = FirebaseDatabase.getInstance().getReference().child("Beta").child("BandPower");
-        Theta = FirebaseDatabase.getInstance().getReference().child("Theta").child("BandPower");
-        t1=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+        t1=new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if(status != TextToSpeech.ERROR) {
@@ -54,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        loadActivity();
+    }
+
+    private void loadActivity() {
+        Beta = FirebaseDatabase.getInstance().getReference().child("Beta").child("BandPower");
+
         Beta.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -61,8 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "beta is: " + value);
 
                 double threshold = Double.parseDouble(value);
-                testFunction(threshold);
-                //change to threshold 0.5 for beta
+                launchTrivia(threshold);
             }
 
             @Override
@@ -72,38 +55,56 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void testFunction(double threshold) {
-        if(threshold < 10) {
-            //tone generator
-            //audio generator
+    private void launchTrivia(double threshold) {
 
-            //Random r = new Random();
-            //final int[] size = new int[1];
+        if(threshold < 25) {
 
-            //TriviaQuestion = FirebaseDatabase.getInstance().getReference().child("masterSheet");
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("masterSheet");
 
-            //set query to get count of questions
-            //int question = r.nextInt(size[0]);
-            //TriviaQuestion = FirebaseDatabase.getInstance().getReference().child("masterSheet").child(Integer.toString(question)).child("0");
-            //TriviaAnswer = FirebaseDatabase.getInstance().getReference().child("masterSheet").child(Integer.toString(question)).child("1");
+            Random rn = new Random();
+            int question = rn.nextInt(14) + 1;
+            Log.w(TAG, "Question Number: " + Integer.toString(question));
 
-            //ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 300);
-            //toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+            //Get question and answer from database
+            ref.child(Integer.toString(question)).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    String q = dataSnapshot.child("0").getValue(String.class);
+                    String a = dataSnapshot.child("1").getValue(String.class);
 
-            String toSpeak = "What is four, plus two, times nine, plus fourteen";
-            t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+                    Log.w(TAG, "Question: " + q);
+                    Log.w(TAG, "Answer: " + a);
 
-            //Sleep to prevent excessive reads after an event
-            try {
-                Thread.sleep(10000);
+                    //Ask question
+                    t1.speak(q, TextToSpeech.QUEUE_FLUSH, null);
 
-            }
-            catch (InterruptedException e) {
+                    //Wait 8 seconds, then give the answer
+                    hold(8000);
+                    t1.speak("The answer is, " + a, TextToSpeech.QUEUE_FLUSH, null);
 
-            }
+                    //Sleep to prevent excessive reads after an event
+                    hold(6000);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.w(TAG, "Failed to read value.", databaseError.toException());
+                }
+            });
         }
 
         //Restart read activity
         loadActivity();
+    }
+
+    //Sleep function
+    private void hold(int mils) {
+        try {
+            Thread.sleep(mils);
+
+        }
+        catch (InterruptedException e) {
+
+        }
     }
 }
