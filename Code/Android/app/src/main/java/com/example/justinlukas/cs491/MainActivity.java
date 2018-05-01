@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void launchTrivia(double threshold) {
 
-        if(threshold < 25) {
+        if(threshold < 1) {
 
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("masterSheet");
 
