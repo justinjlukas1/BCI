@@ -61,10 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "beta is: " + value);
 
                 double threshold = Double.parseDouble(value);
+                testFunction(threshold);
                 //change to threshold 0.5 for beta
-                if(threshold < 1) {
-                    testFunction();
-                }
             }
 
             @Override
@@ -74,34 +72,37 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void testFunction() {
-        //tone generator
-        //audio generator
+    private void testFunction(double threshold) {
+        if(threshold < 10) {
+            //tone generator
+            //audio generator
 
-        //Random r = new Random();
-        //final int[] size = new int[1];
+            //Random r = new Random();
+            //final int[] size = new int[1];
 
-        //TriviaQuestion = FirebaseDatabase.getInstance().getReference().child("masterSheet");
+            //TriviaQuestion = FirebaseDatabase.getInstance().getReference().child("masterSheet");
 
-        //set query to get count of questions
-        //int question = r.nextInt(size[0]);
-        //TriviaQuestion = FirebaseDatabase.getInstance().getReference().child("masterSheet").child(Integer.toString(question)).child("0");
-        //TriviaAnswer = FirebaseDatabase.getInstance().getReference().child("masterSheet").child(Integer.toString(question)).child("1");
+            //set query to get count of questions
+            //int question = r.nextInt(size[0]);
+            //TriviaQuestion = FirebaseDatabase.getInstance().getReference().child("masterSheet").child(Integer.toString(question)).child("0");
+            //TriviaAnswer = FirebaseDatabase.getInstance().getReference().child("masterSheet").child(Integer.toString(question)).child("1");
 
-        //ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 300);
-        //toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+            //ToneGenerator toneG = new ToneGenerator(AudioManager.STREAM_ALARM, 300);
+            //toneG.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
 
-        String toSpeak = "What is four, plus two, times nine, plus fourteen";
-        t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
+            String toSpeak = "What is four, plus two, times nine, plus fourteen";
+            t1.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
 
-        //Sleep to prevent too many reads
-        try {
-            Thread.sleep(10000);
+            //Sleep to prevent excessive reads after an event
+            try {
+                Thread.sleep(10000);
 
+            }
+            catch (InterruptedException e) {
+
+            }
         }
-        catch (InterruptedException e) {
 
-        }
         //Restart read activity
         loadActivity();
     }
